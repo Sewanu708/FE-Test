@@ -3,16 +3,22 @@ import { RiEdit2Line } from "react-icons/ri";
 import Genbutton from "@/components/button";
 import { IoIosArrowDown } from "react-icons/io";
 import { GoQuestion } from "react-icons/go";
-import CommonInput from "@/components/Input";
+import ChatRoom from "@/components/ChatRoom";
+import { InputContext } from "@/context";
+import { useContext } from "react";
+import ChatDetails from "@/context/ChatDetails";
 
 export default function Home() {
+  const { chatMode } = useContext(InputContext)
   return (
-    <main className="w-full min-h-screen bg-white text-black flex flex-col">
-      <nav className="w-full flex items-center justify-between py-4 px-12">
+    <main className="w-full h-screen bg-white text-black flex flex-col overflow-hidden">
+
+    
+      <nav className="w-full fixed top-0 left-0 right-0 z-10 bg-white flex items-center justify-between py-4 md:px-12 ">
         <div className="flex gap-1.5 items-center justify-center">
           <RiEdit2Line className="text-[18px] text-zinc-800 m-2" />
-          <span className="text-2xl">ChatGPT</span>
-          <IoIosArrowDown className="text-[18px] text-zinc-500" />
+          <span className="text-[18px]">ChatGPT</span>
+          <IoIosArrowDown className="text-[20px] text-zinc-500" />
         </div>
         <div className="flex gap-2 items-center">
           <Genbutton text="Log in" />
@@ -21,11 +27,14 @@ export default function Home() {
         </div>
       </nav>
 
-      <div className="flex-1 flex flex-col gap-y-8 items-center justify-center">
-        <h2 className="text-3xl">What can I help with?</h2>
-        <CommonInput />
+      
+      <div className="flex-1 flex flex-col items-center justify-center overflow-y-auto pt-20">
+        {
+          chatMode ? <ChatDetails /> : <ChatRoom />
+        }
       </div>
     </main>
+
 
   );
 }

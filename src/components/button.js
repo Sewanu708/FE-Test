@@ -2,7 +2,7 @@
 import { useState } from "react"
 import { Button } from "./ui/button"
 
-function Genbutton({ variant, text, icon, func }) {
+function Genbutton({ variant, text, icon, className, func }) {
     const [property, setProperty] = useState(variant)
     return (
 
@@ -11,7 +11,8 @@ function Genbutton({ variant, text, icon, func }) {
             else{
                 setProperty(variant)
             }
-        }} asChild className='border rounded-3xl font-normal cursor-pointer'>
+            func()
+        }} asChild className={`border rounded-3xl font-normal cursor-pointer ${className}` }>
             <span className="flex text-2xl items-center">
                 {icon}
                 {text}
