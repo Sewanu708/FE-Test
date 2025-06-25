@@ -1,7 +1,7 @@
 import React from 'react'
 import Genbutton from './button'
 import { CardAction } from './ui/card'
-function ActionCards({ items, setIdeas, usage }) {
+function ActionCards({ items, setIdeas, usage , func = ()=>{}}) {
 
     return (
         items.map((item, index) => <CardAction key={index} onClick={() => {

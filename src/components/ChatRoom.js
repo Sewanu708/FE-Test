@@ -19,7 +19,7 @@ import { useContext, useState } from "react";
 import SuggestionCard from "./SuggestionCard";
 import { InputContext } from "@/context";
 import CommonInput from "./CommonInput";
-import ChatDetails from "@/context/ChatDetails";
+import ChatDetails from "@/components/ChatDetails";
 
 
 function ChatRoom() {
@@ -35,15 +35,15 @@ function ChatRoom() {
                 {
                     <div className="mt-8 pl-6 mr-4">
                         {
-                            // Ideas.display ? 
+                            Ideas.display ? 
                             input &&
                             <SuggestionCard items={Object.values(suggestedIdeas).flat()} />
 
-                            //     : 
-                            // <div className="flex items-center justify-center gap-4 mt-8">
-                            //         {<ActionCards items={[['Brainstorm', <LuLightbulb color="#FFDB56" />], ['Code', <FaCode color="#9F9FF8" />], ['Summarize text', <IoDocumentTextOutline color="#FFB55B" />], ['Get advice', <FaGraduationCap color="#92BFFF" />], ['More', '']]} setIdeas={setIdeas} usage={0}/>}
+                                : 
+                            <div className="flex items-center justify-center gap-4 mt-8">
+                                    {<ActionCards items={[['Brainstorm', <LuLightbulb color="#FFDB56" />], ['Code', <FaCode color="#9F9FF8" />], ['Summarize text', <IoDocumentTextOutline color="#FFB55B" />], ['Get advice', <FaGraduationCap color="#92BFFF" />], ['More', '']]} setIdeas={setIdeas} usage={0}/>}
 
-                            //     </div>
+                                </div>
                         }
                     </div>
                 }
