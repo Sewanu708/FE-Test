@@ -71,13 +71,34 @@ function CommonInput() {
             clearTimeout(hoverTimeout);
         }
     };
+    const cardRef = useRef(null)
 
-    const handleAttachCardLeave = () => {
+    useEffect(() => {
+        const handleClick = (e) => {
+            if (cardRef.current && !cardRef.current.contains(e.target)) {
+                setActiveCard(false);
+            }
+        };
+
+        document.addEventListener('click', handleClick);
+
+        return () => {
+            document.removeEventListener('click', handleClick);
+        };
+    }, []);
+
+
+    useEffect(() => {
         const timeout = setTimeout(() => {
             setActiveCard(false);
-        }, 100);
-        setHoverTimeout(timeout);
-    };
+        }, 5000);
+
+        return () => {
+            clearTimeout(timeout)
+        }
+    }, [activeCard])
+
+
 
     const color = showCanvas ? 'bg-zinc-200 border-0' : 'bg-white'
     const actions = [
@@ -122,22 +143,42 @@ function CommonInput() {
 
                 <CardFooter className="flex flex-col sm:flex-row items-center justify-between gap-4 w-full px-2 sm:px-4 pb-4">
                     <div className="flex flex-wrap gap-2 justify-start w-full sm:w-auto">
-                        {actions.map(action => (
-                            <CardAction key={action.id}>
-                                <Button
-                                    variant="thickOutline"
-                                    asChild
-                                    // onMouseEnter={action.id==='attach'?handleCardHover:''}
-                                    // onMouseLeave={action.id==='attach'?handleCardLeave:''}
-                                    className="border rounded-3xl font-normal cursor-pointer"
-                                >
-                                    <span className="flex text-2xl items-center gap-2">
-                                        {action.icon}
-                                        {action.label}
-                                    </span>
-                                </Button>
-                            </CardAction>
-                        ))}
+
+                        {actions.map(action => {
+                            if (action.id === 'attach') {
+                                return (<CardAction key={action.id}>
+                                    <Button
+                                        variant="thickOutline"
+                                        asChild
+                                        ref={cardRef}
+                                        onClick={() => {
+                                            setActiveCard(true)
+                                        }}
+                                        className="border rounded-3xl font-normal cursor-pointer"
+                                    >
+                                        <span className="flex text-2xl items-center gap-2">
+                                            {action.icon}
+                                            {action.label}
+                                        </span>
+                                    </Button>
+                                </CardAction>)
+                            } else {
+                                return (<CardAction key={action.id}>
+                                    <Button
+                                        variant="thickOutline"
+                                        asChild
+
+                                        className="border rounded-3xl font-normal cursor-pointer"
+                                    >
+                                        <span className="flex text-2xl items-center gap-2">
+                                            {action.icon}
+                                            {action.label}
+                                        </span>
+                                    </Button>
+                                </CardAction>)
+                            }
+
+                        })}
                     </div>
 
 
@@ -160,7 +201,13 @@ function CommonInput() {
                 </CardFooter>
             </Card>
 
-         
+
+            {
+                activeCard && <div className="absolute bottom-[-40px] left-[-20px]">
+                    <AttachCard />
+                </div>
+            }
+
         </div>
     );
 }

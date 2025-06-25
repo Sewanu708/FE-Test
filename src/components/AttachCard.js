@@ -1,9 +1,9 @@
 import Image from "next/image"
 import Genbutton from "./button"
-import img from '../../public/Group.png'
+import img from '../../public/vector.svg'
 function AttachCard() {
     return (
-        <div className="w-[300px] bg-white rounded-b">
+        <div className="w-fit bg-zinc-100 max-w-[300px] min-w-[200px] rounded-b">
             <div className="w-full">
                 <Image src={img} alt="nothing" className="w-full" />
             </div>
