@@ -12,7 +12,7 @@ function ChatDetails() {
     const [copied, setCopied] = useState(false);
     const [loadingItems, setLoadingItems] = useState(new Set());
     const bottomRef = useRef(null);
-    const [agree, setAgree] = useState(true);
+    const [agree, setAgree] = useState(false);
 
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -22,10 +22,7 @@ function ChatDetails() {
     useEffect(() => {
         if (chat.length > 0) {
             const latestItem = chat[chat.length - 1];
-
-
             setLoadingItems(prev => new Set([...prev, latestItem.id]));
-
             const timer = setTimeout(() => {
                 setLoadingItems(prev => {
                     const newSet = new Set(prev);
@@ -55,9 +52,9 @@ function ChatDetails() {
         }
         const id = setTimeout(() => {
             setAgree(false);
-        }, 1500);
+        }, 2000);
         return () => clearTimeout(id);
-    }, [showCanvas]);
+    }, [agree]);
 
     return (
         <div className="w-full flex flex-col h-full max-w-screen-lg px-2 mx-auto relative">
@@ -93,7 +90,7 @@ function ChatDetails() {
                 <div ref={bottomRef} />
             </div>
             <div className="sticky bottom-0 ">
-                {agree &&
+                {(agree) &&
                     <Agreement />}
                 <CommonInput />
                 <p className="text-xs font-semibold text-center text-zinc-900 mt-2">

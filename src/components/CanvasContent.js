@@ -43,19 +43,19 @@ function CanvasContent() {
         </div>
             {Object.keys(showQuote).length > 0 && (
                 <div
-                    className="fixed bg-white text-black px-3 py-2 rounded-full shadow-sm z-50 flex items-center gap-2 cursor-pointer hover:bg-zinc-200 quote-button"
+                    className="fixed bg-white text-black px-4 py-2 rounded-full shadow-sm z-50 flex items-center gap-2 cursor-pointer  quote-button"
                     style={{
                         left: quotePosition.x,
-                        top: quotePosition.y + 40
+                        top: quotePosition.y - 40
                     }}
                     onClick={() => setHighlightedText(Object.values(showQuote)[0])}
                 >
-                    <div className="flex items-center">
-                        <TbMessageCircle />
-                        <span className="ml-1">Ask ChatGPT</span>
+                    <div className="flex group items-center">
+                        <TbMessageCircle className="group-hover:bg-zinc-400"/>
+                        <span className="ml-1 group-hover:text-zinc-400">Ask ChatGPT</span>
                     </div>
 
-                    <div className="h-2 w-[1px] bg-zinc-200"></div>
+                    <div className="h-2 w-[1px] bg-zinc-200 hover:bg-zinc-100"></div>
 
                     <div><RiBold /></div>
                     <div><FiItalic /></div>

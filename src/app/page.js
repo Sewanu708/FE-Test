@@ -15,7 +15,7 @@ import Canvas from "@/components/Canvas";
 import { InputContext } from "@/context";
 
 export default function Home() {
-  const { chatMode, setChatMode, showCanvas, setShowCanvas } = useContext(InputContext);
+  const { chatMode, setChat, setChatMode, showCanvas, setShowCanvas } = useContext(InputContext);
 
 
   return (
@@ -31,6 +31,7 @@ export default function Home() {
                   <RiEdit2Line className="text-[18px] text-zinc-800 m-2" onClick={() => {
                     setChatMode(false)
                     setShowCanvas(false)
+                    setChat([])
                   }} />
                   <span className="text-[18px]">ChatGPT</span>
                   <IoIosArrowDown className="text-[20px] text-zinc-500" />
@@ -64,6 +65,7 @@ export default function Home() {
               <PiSidebarLight className="text-[18px] text-zinc-800 m-2 flex sm:hidden" />
               <RiEdit2Line className="text-[18px] text-zinc-800 m-2" onClick={() => {
                 setChatMode(false)
+                 setChat([])
               }} />
               <span className="text-[18px]">ChatGPT</span>
               <IoIosArrowDown className="text-[20px] text-zinc-500" />

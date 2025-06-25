@@ -16,10 +16,11 @@ import { RiVoiceAiFill } from "react-icons/ri";
 import { AiOutlineClose } from 'react-icons/ai';
 import ActionCards from "./ActionCards";
 import { useContext, useRef, useEffect, useState } from "react";
+import { AiFillCloseCircle } from "react-icons/ai";
 import { InputContext } from "@/context";
 import { Button } from "./ui/button";
 import AttachCard from "./AttachCard";
-
+import { PiNewspaperThin } from "react-icons/pi";
 function CommonInput() {
     const { setChatMode, setChat, setInput, showCanvas, input, highlightedText, setHighlightedText } = useContext(InputContext);
     const textareaRef = useRef(null);
@@ -50,27 +51,9 @@ function CommonInput() {
     };
 
     const [activeCard, setActiveCard] = useState(false);
-    const [hoverTimeout, setHoverTimeout] = useState(null);
+    const [attached, setAttached] = useState(true);
 
-    const handleCardHover = () => {
-        if (hoverTimeout) {
-            clearTimeout(hoverTimeout);
-        }
-        setActiveCard(true);
-    };
 
-    const handleCardLeave = () => {
-        const timeout = setTimeout(() => {
-            setActiveCard(false);
-        }, 100);
-        setHoverTimeout(timeout);
-    };
-
-    const handleAttachCardHover = () => {
-        if (hoverTimeout) {
-            clearTimeout(hoverTimeout);
-        }
-    };
     const cardRef = useRef(null)
 
     useEffect(() => {
@@ -98,8 +81,6 @@ function CommonInput() {
         }
     }, [activeCard])
 
-
-
     const color = showCanvas ? 'bg-zinc-200 border-0' : 'bg-white'
     const actions = [
         { id: 'attach', label: 'Attach', icon: <GrAttachment /> },
@@ -109,7 +90,7 @@ function CommonInput() {
 
     return (
         <div className="relative w-full">
-            <Card className={`w-full rounded-3xl shadow-2xl flex flex-col items-start justify-center ${color}`}>
+            <Card className={`w-full rounded-3xl shadow-2xl flex flex-col items-start group justify-center ${color}`}>
                 <CardContent className="w-full">
                     {highlightedText && (
                         <div className="w-full flex items-center justify-between p-3 sm:p-4 shadow-md rounded-lg border bg-zinc-100 border-zinc-300">
@@ -118,14 +99,22 @@ function CommonInput() {
                                 <span className="">{highlightedText}</span>
                             </div>
                             <button
-                                className="ml-4 text-zinc-500 hover:text-red-500 transition-colors"
+                                className="ml-4 text-zinc-500 cursor-pointer hover:text-zinc-300 transition-colors"
                                 onClick={() => setHighlightedText("")}
                             >
                                 <AiOutlineClose className="text-lg" />
                             </button>
                         </div>
                     )}
-
+                    {(showCanvas && attached) && (
+                        <div className="w-full relative flex items-center justify-between p-3 sm:p-4 shadow-md rounded-lg border bg-zinc-100 border-zinc-300">
+                            <div className="flex items-center gap-2 text-sm text-zinc-700 flex-1 overflow-hidden">
+                                <PiNewspaperThin className="text-lg text-zinc-500" />
+                                <span className="">New Document</span>
+                            </div>
+                            <AiFillCloseCircle className="absolute group-hover:block hidden top-[-3px] left-[-3px] cursor-pointer" onClick={() => setAttached(false)} />
+                        </div>
+                    )}
                     <form className="w-full">
                         <div className="flex items-center justify-center w-full">
                             <textarea
