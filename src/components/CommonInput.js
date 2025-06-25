@@ -13,7 +13,7 @@ import { TfiWorld } from "react-icons/tfi";
 import { GrAttachment } from "react-icons/gr";
 import { LuLightbulb } from "react-icons/lu";
 import { RiVoiceAiFill } from "react-icons/ri";
-import { IoDocumentTextOutline, IoMdClose } from "react-icons/io5";
+import { AiOutlineClose } from 'react-icons/ai';
 import ActionCards from "./ActionCards";
 import { useContext, useRef, useEffect, useState } from "react";
 import { InputContext } from "@/context";
@@ -100,7 +100,7 @@ function CommonInput() {
                                 className="ml-4 text-zinc-500 hover:text-red-500 transition-colors"
                                 onClick={() => setHighlightedText("")}
                             >
-                                <IoMdClose className="text-lg" />
+                                <AiOutlineClose className="text-lg" />
                             </button>
                         </div>
                     )}
