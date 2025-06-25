@@ -10,22 +10,22 @@ import Agreement from "./Agreement";
 function ChatDetails() {
     const { chat, setHighlightedText, showCanvas, input } = useContext(InputContext);
     const [copied, setCopied] = useState(false);
-    const [loadingItems, setLoadingItems] = useState(new Set()); 
+    const [loadingItems, setLoadingItems] = useState(new Set());
     const bottomRef = useRef(null);
     const [agree, setAgree] = useState(true);
 
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, [chat,loadingItems]);
+    }, [chat, loadingItems]);
 
-    
+
     useEffect(() => {
         if (chat.length > 0) {
             const latestItem = chat[chat.length - 1];
-            
-           
+
+
             setLoadingItems(prev => new Set([...prev, latestItem.id]));
-         
+
             const timer = setTimeout(() => {
                 setLoadingItems(prev => {
                     const newSet = new Set(prev);
@@ -36,7 +36,7 @@ function ChatDetails() {
 
             return () => clearTimeout(timer);
         }
-    }, [chat.length]); 
+    }, [chat]);
 
     const handleCopy = async (text) => {
         try {
@@ -62,8 +62,8 @@ function ChatDetails() {
     return (
         <div className="w-full flex flex-col h-full max-w-screen-lg px-2 mx-auto relative">
             <div className="flex-1 overflow-y-auto space-y-8 py-4 scrollbar-hide">
-                {chat?.map((item, index) => (
-                    <div key={index} className="w-full mb-20 sm:mb-24">
+                {chat?.map((item) => (
+                    <div key={item.id} className="w-full mb-20 sm:mb-24">
                         <div className="w-full group flex flex-col items-end justify-end mb-12 relative px-1 sm:px-0">
                             {item.input?.reply && (
                                 <div className="flex items-center text-zinc-400 text-sm mb-2">
@@ -72,17 +72,16 @@ function ChatDetails() {
                                 </div>
                             )}
                             <div className="w-fit max-w-[85%] sm:max-w-[60%] px-4 py-2 bg-zinc-200 rounded-3xl text-sm sm:text-base">
-                                {item.input.userInput}
+                                {item.input?.userInput}
                             </div>
                             <div
-                                className="absolute right-0 bottom-[-14px] opacity-0 group-hover:opacity-100 flex items-center text-sm cursor-pointer text-zinc-500 hover:text-black transition-all duration-200"
+                                className="absolute -bottom-6 right-2 opacity-0 group-hover:opacity-100 flex items-center text-sm cursor-pointer text-zinc-500 hover:text-black transition-all duration-200 z-10"
                                 onClick={() => handleCopy(item.input.userInput)}
                             >
                                 {copied ? <FaCheck /> : <GoCopy />}
                             </div>
                         </div>
-                        
-                       
+
                         {loadingItems.has(item.id) ? (
                             <div className="w-4 h-4 bg-black rounded animate-pulse"></div>
                         ) : (
@@ -90,11 +89,12 @@ function ChatDetails() {
                         )}
                     </div>
                 ))}
+
                 <div ref={bottomRef} />
             </div>
             <div className="sticky bottom-0 ">
-                {agree && 
-                <Agreement />}
+                {agree &&
+                    <Agreement />}
                 <CommonInput />
                 <p className="text-xs font-semibold text-center text-zinc-900 mt-2">
                     ChatGPT can make mistakes. Check important info.

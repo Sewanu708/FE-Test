@@ -49,97 +49,127 @@ function CommonInput() {
         }
     };
 
-    const [activeCard, setActiveCard] = useState(false)
+    const [activeCard, setActiveCard] = useState(false);
+    const [hoverTimeout, setHoverTimeout] = useState(null);
+
     const handleCardHover = () => {
-        setActiveCard(true)
-    }
-    const handleCloseAfterHover = () => {
-        setActiveCard(false)
-    }
+        if (hoverTimeout) {
+            clearTimeout(hoverTimeout);
+        }
+        setActiveCard(true);
+    };
+
+    const handleCardLeave = () => {
+        const timeout = setTimeout(() => {
+            setActiveCard(false);
+        }, 100);
+        setHoverTimeout(timeout);
+    };
+
+    const handleAttachCardHover = () => {
+        if (hoverTimeout) {
+            clearTimeout(hoverTimeout);
+        }
+    };
+
+    const handleAttachCardLeave = () => {
+        const timeout = setTimeout(() => {
+            setActiveCard(false);
+        }, 100);
+        setHoverTimeout(timeout);
+    };
 
     const color = showCanvas ? 'bg-zinc-200 border-0' : 'bg-white'
-    
+    const actions = [
+        { id: 'attach', label: 'Attach', icon: <GrAttachment /> },
+        { id: 'search', label: 'Search', icon: <TfiWorld /> },
+        { id: 'reason', label: 'Reason', icon: <LuLightbulb /> },
+    ];
+
     return (
-        <Card className={`w-full rounded-3xl shadow-2xl flex flex-col items-start justify-center ${color}`}>
-            <CardContent className="">
-                {highlightedText && (
-                    <div className="w-full flex items-center justify-between p-3 sm:p-4 shadow-md rounded-lg border bg-zinc-100 border-zinc-300">
-                        <div className="flex items-center gap-2 text-sm text-zinc-700 flex-1 overflow-hidden">
-                            <PiArrowBendDownRightThin className="text-lg text-zinc-500" />
-                            <span className="truncate">{highlightedText}</span>
-                        </div>
-                        <button
-                            className="ml-4 text-zinc-500 hover:text-red-500 transition-colors"
-                            onClick={() => setHighlightedText("")}
-                        >
-                            <IoMdClose className="text-lg" />
-                        </button>
-                    </div>
-                )}
-
-                <form className="w-full">
-                    <div className="flex items-center justify-center w-full">
-                        <textarea
-                            ref={textareaRef}
-                            placeholder="Ask anything"
-                            className="w-full p-3 text-sm sm:text-base border-0 resize-none outline-none bg-transparent overflow-y-auto min-h-[40px] max-h-[200px]"
-                            value={input}
-                            onChange={(e) => setInput(e.target.value)}
-                            onKeyDown={handleKeyPress}
-                            rows={1}
-                        />
-                    </div>
-                </form>
-            </CardContent>
-
-            <CardFooter className="flex flex-col sm:flex-row items-center justify-between gap-4 w-full px-2 sm:px-4 pb-4">
-                <div className="flex flex-wrap gap-2 justify-start w-full sm:w-auto">
-                    {[
-                        ['Attach', <GrAttachment key="attach-icon" />],
-                        ['Search', <TfiWorld key="search-icon" />],
-                        ['Reason', <LuLightbulb key="reason-icon" />]
-                    ].map((item, index) => (
-                        <CardAction key={index}>
-                            <Button
-                                variant={'thickOutline'}
-                                asChild
-                                onMouseEnter={() => handleCardHover()}
-                                onMouseLeave={handleCloseAfterHover}
-                                className={`border rounded-3xl font-normal cursor-pointer`}
+        <div className="relative w-full">
+            <Card className={`w-full rounded-3xl shadow-2xl flex flex-col items-start justify-center ${color}`}>
+                <CardContent className="">
+                    {highlightedText && (
+                        <div className="w-full flex items-center justify-between p-3 sm:p-4 shadow-md rounded-lg border bg-zinc-100 border-zinc-300">
+                            <div className="flex items-center gap-2 text-sm text-zinc-700 flex-1 overflow-hidden">
+                                <PiArrowBendDownRightThin className="text-lg text-zinc-500" />
+                                <span className="truncate">{highlightedText}</span>
+                            </div>
+                            <button
+                                className="ml-4 text-zinc-500 hover:text-red-500 transition-colors"
+                                onClick={() => setHighlightedText("")}
                             >
-                                <span className="flex text-2xl items-center">
-                                    {item[0]}
-                                    {item[1]}
-                                </span>
-                            </Button>
-                        </CardAction>
-                    ))}
-                </div>
-                
-                <div className="w-full sm:w-auto flex justify-end">
-                    {showCanvas ? 
-                        <Genbutton
-                            func={send}
-                            text={''}
-                            className="!rounded-full"
-                            icon={<FaArrowUp />}
-                        /> :
-                        <Genbutton
-                            func={send}
-                            text={input ? '' : 'Voice'}
-                            className="!rounded-full"
-                            icon={input ? <FaArrowUp /> : <RiVoiceAiFill />}
-                        />
-                    }
-                </div>
+                                <IoMdClose className="text-lg" />
+                            </button>
+                        </div>
+                    )}
 
-                {activeCard && (
-                    <div className="absolute"> 
-                        <AttachCard />
+                    <form className="w-full">
+                        <div className="flex items-center justify-center w-full">
+                            <textarea
+                                ref={textareaRef}
+                                placeholder="Ask anything"
+                                className="w-full p-3 text-sm sm:text-base border-0 resize-none outline-none bg-transparent overflow-y-auto min-h-[40px] max-h-[200px]"
+                                value={input}
+                                onChange={(e) => setInput(e.target.value)}
+                                onKeyDown={handleKeyPress}
+                                rows={1}
+                            />
+                        </div>
+                    </form>
+                </CardContent>
+
+                <CardFooter className="flex flex-col sm:flex-row items-center justify-between gap-4 w-full px-2 sm:px-4 pb-4">
+                    <div className="flex flex-wrap gap-2 justify-start w-full sm:w-auto">
+                        {actions.map(action => (
+                            <CardAction key={action.id}>
+                                <Button
+                                    variant="thickOutline"
+                                    asChild
+                                    onMouseEnter={handleCardHover}
+                                    onMouseLeave={handleCardLeave}
+                                    className="border rounded-3xl font-normal cursor-pointer"
+                                >
+                                    <span className="flex text-2xl items-center gap-2">
+                                        {action.icon}
+                                        {action.label}
+                                    </span>
+                                </Button>
+                            </CardAction>
+                        ))}
                     </div>
-                )}
-            </CardFooter>
-        </Card>
+
+
+                    <div className="w-full sm:w-auto flex justify-end">
+                        {showCanvas ?
+                            <Genbutton
+                                func={send}
+                                text={''}
+                                className="!rounded-full"
+                                icon={<FaArrowUp />}
+                            /> :
+                            <Genbutton
+                                func={send}
+                                text={input ? '' : 'Voice'}
+                                className="!rounded-full"
+                                icon={input ? <FaArrowUp /> : <RiVoiceAiFill />}
+                            />
+                        }
+                    </div>
+                </CardFooter>
+            </Card>
+
+            {activeCard && (
+                <div
+                    className="absolute bottom-16 left-0 z-10"
+                    onMouseEnter={handleAttachCardHover}
+                    onMouseLeave={handleAttachCardLeave}
+                >
+                    <AttachCard />
+                </div>
+            )}
+        </div>
     );
 }
 

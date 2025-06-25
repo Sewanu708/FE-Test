@@ -1,4 +1,4 @@
-import { IoMdClose } from "react-icons/io"
+import { AiOutlineClose } from 'react-icons/ai';
 import Genbutton from "./button"
 import { GoQuestion } from "react-icons/go"
 import { IoCopyOutline, IoRefresh } from "react-icons/io5";
@@ -15,9 +15,9 @@ function Canvas() {
           
             <nav className="w-full sticky top-0 z-20 bg-white border-zinc-200 py-4 px-4 md:px-12 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                    <IoMdClose className="text-xl text-zinc-500 cursor-pointer hover:text-zinc-800 transition" onClick={() => setShowCanvas(false)} />
+                    <AiOutlineClose className="text-xl text-zinc-500 cursor-pointer hover:text-zinc-800 transition" onClick={() => setShowCanvas(false)} />
                     <span className="text-base md:text-lg font-medium text-zinc-700">
-                        Hey! How's it going?
+                        Hey! How&apos;s it going?
                     </span>
                 </div>
 
