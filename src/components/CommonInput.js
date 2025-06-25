@@ -127,8 +127,8 @@ function CommonInput() {
                                 <Button
                                     variant="thickOutline"
                                     asChild
-                                    onMouseEnter={handleCardHover}
-                                    onMouseLeave={handleCardLeave}
+                                    // onMouseEnter={action.id==='attach'?handleCardHover:''}
+                                    // onMouseLeave={action.id==='attach'?handleCardLeave:''}
                                     className="border rounded-3xl font-normal cursor-pointer"
                                 >
                                     <span className="flex text-2xl items-center gap-2">
@@ -160,15 +160,7 @@ function CommonInput() {
                 </CardFooter>
             </Card>
 
-            {activeCard && (
-                <div
-                    className="absolute bottom-16 left-0 z-10"
-                    onMouseEnter={handleAttachCardHover}
-                    onMouseLeave={handleAttachCardLeave}
-                >
-                    <AttachCard />
-                </div>
-            )}
+         
         </div>
     );
 }
