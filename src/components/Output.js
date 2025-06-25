@@ -24,43 +24,60 @@ function Output({ output, id }) {
     };
 
     const handleTextSelection = (id) => {
-        const selection = window.getSelection();
-        const selectedText = selection?.toString()?.trim();
 
-        if (selectedText?.length > 0) {
-            const range = selection.getRangeAt(0);
-            const rect = range.getBoundingClientRect();
+        setTimeout(() => {
+            const selection = window.getSelection();
+            const selectedText = selection?.toString()?.trim();
+            console.log('Selected text:', selectedText);
 
-            setQuotePosition({
-                x: rect.left,
-                y: rect.top - 40
-            });
+            if (selectedText && selectedText.length > 0) {
+                try {
+                    const range = selection.getRangeAt(0);
+                    const rect = range.getBoundingClientRect();
 
-            setShowQuote(prev => ({ ...prev, [id]: selectedText }));
-        } else {
-            setShowQuote({});
-        }
+                    setQuotePosition({
+                        x: rect.left + window.scrollX,
+                        y: rect.top + window.scrollY - 40
+                    });
+
+                    setShowQuote({ [id]: selectedText });
+                    console.log('Quote set for id:', id);
+                } catch (error) {
+                    console.log('Error getting selection range:', error);
+                }
+            } else {
+                setShowQuote({});
+            }
+        }, 10);
     };
 
     useEffect(() => {
         const handleClickOutside = (e) => {
+
             if (quoteRef.current && !quoteRef.current.contains(e.target)) {
-                setShowQuote(prev=>{});
+
+                const textContainer = e.target.closest('.select-text');
+                if (!textContainer) {
+                    setShowQuote({});
+                    window.getSelection().removeAllRanges();
+                }
             }
         };
 
-        document.addEventListener("click", handleClickOutside, true);
-        return () => document.removeEventListener("click", handleClickOutside, true);
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
-     
     return (
         <>
             <div
                 className="w-full flex items-center justify-start mt-2 relative"
                 onMouseUp={() => handleTextSelection(id)}
+                onMouseDown={() => {
+                    setShowQuote({});
+                }}
             >
-                <div className="select-text"> 
+                <div className="select-text">
                     <p>{output.header}</p>
                     <hr className="border-zinc-300 my-4 shadow-sm" />
                     <p>{output.content}</p>
@@ -90,7 +107,7 @@ function Output({ output, id }) {
                 </div>
             </div>
 
-            {Object.keys(showQuote).length > 0 && (
+            {showQuote && Object.keys(showQuote).length > 0 && (
                 <div
                     ref={quoteRef}
                     className="fixed bg-zinc-100 text-white px-3 py-2 rounded-full shadow-sm z-50 flex items-center gap-2 cursor-pointer hover:bg-zinc-200 quote-button"
@@ -98,9 +115,12 @@ function Output({ output, id }) {
                         left: quotePosition.x,
                         top: quotePosition.y
                     }}
-                    onClick={() =>
-                        setHighlightedText(Object.values(showQuote)[0])
-                    }
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setHighlightedText(Object.values(showQuote)[0]);
+                        setShowQuote({});
+                        window.getSelection().removeAllRanges();
+                    }}
                 >
                     <MdFormatQuote className="text-sm text-black" />
                 </div>
