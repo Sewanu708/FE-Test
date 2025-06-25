@@ -89,12 +89,12 @@ function CommonInput() {
     return (
         <div className="relative w-full">
             <Card className={`w-full rounded-3xl shadow-2xl flex flex-col items-start justify-center ${color}`}>
-                <CardContent className="">
+                <CardContent className="w-full">
                     {highlightedText && (
                         <div className="w-full flex items-center justify-between p-3 sm:p-4 shadow-md rounded-lg border bg-zinc-100 border-zinc-300">
                             <div className="flex items-center gap-2 text-sm text-zinc-700 flex-1 overflow-hidden">
                                 <PiArrowBendDownRightThin className="text-lg text-zinc-500" />
-                                <span className="truncate">{highlightedText}</span>
+                                <span className="">{highlightedText}</span>
                             </div>
                             <button
                                 className="ml-4 text-zinc-500 hover:text-red-500 transition-colors"

@@ -32,7 +32,7 @@ function ChatDetails() {
                     newSet.delete(latestItem.id);
                     return newSet;
                 });
-            }, 2000);
+            }, 3000);
 
             return () => clearTimeout(timer);
         }
@@ -55,7 +55,7 @@ function ChatDetails() {
         }
         const id = setTimeout(() => {
             setAgree(false);
-        }, 3000);
+        }, 1500);
         return () => clearTimeout(id);
     }, [showCanvas]);
 
