@@ -15,7 +15,7 @@ import { LuLightbulb } from "react-icons/lu";
 import { RiVoiceAiFill } from "react-icons/ri";
 import { IoDocumentTextOutline, IoMdClose } from "react-icons/io5";
 import ActionCards from "./ActionCards";
-import { useContext, useRef, useEffect ,useState} from "react";
+import { useContext, useRef, useEffect, useState } from "react";
 import { InputContext } from "@/context";
 import { Button } from "./ui/button";
 import AttachCard from "./AttachCard";
@@ -56,17 +56,12 @@ function CommonInput() {
     const handleCloseAfterHover = () => {
         setActiveCard(false)
     }
-    // useEffect(() => {
-    //     const textarea = textareaRef.current;
-    //     if (textarea) {
-    //         textarea.style.height = "auto"; 
-    //         textarea.style.height = Math.min(textarea.scrollHeight, 200) + "px"; 
-    //     }
-    // }, [input]);
+
     const color = showCanvas ? 'bg-zinc-200 border-0' : 'bg-white'
+    
     return (
-        <Card className={`w-full rounded-3xl shadow-2xl  flex flex-col items-start justify-center ${color}`}>
-            <CardContent className=" ">
+        <Card className={`w-full rounded-3xl shadow-2xl flex flex-col items-start justify-center ${color}`}>
+            <CardContent className="">
                 {highlightedText && (
                     <div className="w-full flex items-center justify-between p-3 sm:p-4 shadow-md rounded-lg border bg-zinc-100 border-zinc-300">
                         <div className="flex items-center gap-2 text-sm text-zinc-700 flex-1 overflow-hidden">
@@ -99,60 +94,50 @@ function CommonInput() {
 
             <CardFooter className="flex flex-col sm:flex-row items-center justify-between gap-4 w-full px-2 sm:px-4 pb-4">
                 <div className="flex flex-wrap gap-2 justify-start w-full sm:w-auto">
-                    <ActionCards
-                        items={[
-                            ['Attach', <GrAttachment />],
-                            ['Search', <TfiWorld />],
-                            ['Reason', <LuLightbulb />]
-                        ]}
-                        usage={1}
-
-                    />
-
-                    {items.map((item, index) => <CardAction key={index}><Button
-                        variant={property}
-                        onClick={() => {
-                            if (property === 'outline' || property === 'thickOutline') {
-                                setProperty('secondary')
-                            } else {
-                                setProperty(variant)
-                            }
-                            func()
-                        }}
-                        asChild
-                        onMouseEnter={() => handleCardHover()}
-                        onMouseLeave={handleCloseAfterHover}
-                        className={`border rounded-3xl font-normal cursor-pointer ${className}`}
-                    >
-                        <span className="flex text-2xl items-center">
-                            {item[0]}
-                            {item[1]}
-                        </span>
-                    </Button></CardAction>
-                    )}
+                    {[
+                        ['Attach', <GrAttachment key="attach-icon" />],
+                        ['Search', <TfiWorld key="search-icon" />],
+                        ['Reason', <LuLightbulb key="reason-icon" />]
+                    ].map((item, index) => (
+                        <CardAction key={index}>
+                            <Button
+                                variant={'thickOutline'}
+                                asChild
+                                onMouseEnter={() => handleCardHover()}
+                                onMouseLeave={handleCloseAfterHover}
+                                className={`border rounded-3xl font-normal cursor-pointer`}
+                            >
+                                <span className="flex text-2xl items-center">
+                                    {item[0]}
+                                    {item[1]}
+                                </span>
+                            </Button>
+                        </CardAction>
+                    ))}
                 </div>
+                
                 <div className="w-full sm:w-auto flex justify-end">
-                    {showCanvas ? <Genbutton
-                        func={send}
-                        text={''}
-                        className="!rounded-full"
-                        icon={<FaArrowUp />}
-                    /> :
-
-
+                    {showCanvas ? 
+                        <Genbutton
+                            func={send}
+                            text={''}
+                            className="!rounded-full"
+                            icon={<FaArrowUp />}
+                        /> :
                         <Genbutton
                             func={send}
                             text={input ? '' : 'Voice'}
                             className="!rounded-full"
                             icon={input ? <FaArrowUp /> : <RiVoiceAiFill />}
-                        />}
+                        />
+                    }
                 </div>
 
-                {
-                    activeCard && (
+                {activeCard && (
+                    <div className="absolute"> 
                         <AttachCard />
-                    )
-                }
+                    </div>
+                )}
             </CardFooter>
         </Card>
     );

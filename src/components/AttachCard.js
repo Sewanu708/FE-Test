@@ -5,7 +5,7 @@ function AttachCard() {
     return (
         <div>
             <div>
-                <Image src={img} />
+                <Image src={img} alt="nothing" />
             </div>
             <div className="flex flex-col gap-y-2">
                 <h3 className="text-2xl font-semibold">Try advanced features for free</h3>

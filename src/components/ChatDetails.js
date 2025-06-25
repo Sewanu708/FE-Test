@@ -16,7 +16,7 @@ function ChatDetails() {
 
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, [chat]);
+    }, [chat,loadingItems]);
 
     
     useEffect(() => {
@@ -84,7 +84,7 @@ function ChatDetails() {
                         
                        
                         {loadingItems.has(item.id) ? (
-                            <div className="w-8 h-8 bg-black rounded animate-pulse"></div>
+                            <div className="w-4 h-4 bg-black rounded animate-pulse"></div>
                         ) : (
                             <Output output={item.output} id={item.id} />
                         )}
@@ -92,8 +92,9 @@ function ChatDetails() {
                 ))}
                 <div ref={bottomRef} />
             </div>
-            <div className="sticky bottom-0">
-                {agree && <Agreement />}
+            <div className="sticky bottom-0 ">
+                {agree && 
+                <Agreement />}
                 <CommonInput />
                 <p className="text-xs font-semibold text-center text-zinc-900 mt-2">
                     ChatGPT can make mistakes. Check important info.

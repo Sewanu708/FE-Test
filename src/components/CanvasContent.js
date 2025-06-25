@@ -46,7 +46,7 @@ function CanvasContent() {
                     className="fixed bg-white text-black px-3 py-2 rounded-full shadow-sm z-50 flex items-center gap-2 cursor-pointer hover:bg-zinc-200 quote-button"
                     style={{
                         left: quotePosition.x,
-                        top: quotePosition.y
+                        top: quotePosition.y + 40
                     }}
                     onClick={() => setHighlightedText(Object.values(showQuote)[0])}
                 >
