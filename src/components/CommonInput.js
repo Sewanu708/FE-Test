@@ -81,6 +81,14 @@ function CommonInput() {
         }
     }, [activeCard])
 
+    useEffect(()=>{
+        const textHTMLElement = textareaRef.current
+        if (textHTMLElement){
+            textHTMLElement.style.height ='auto';
+            textHTMLElement.style.height = handleTextDynamicSize(textHTMLElement) + 'px'
+        }
+    },[input])
+
     const color = showCanvas ? 'bg-zinc-200 border-0' : 'bg-white'
     const actions = [
         { id: 'attach', label: 'Attach', icon: <GrAttachment /> },
@@ -88,6 +96,14 @@ function CommonInput() {
         { id: 'reason', label: 'Reason', icon: <LuLightbulb /> },
     ];
 
+    const handleTextDynamicSize = (textHTMLElement) =>{
+        const {borderTopWidth, borderBottomWidth, paddingTop,lineHeight, fontSize, paddingBottom} = window.getComputedStyle(textHTMLElement)
+
+        const scrollHeight = textHTMLElement.scrollHeight + parseFloat(borderTopWidth) + parseFloat(borderBottomWidth)
+        console.log(scrollHeight)
+        return Math.min(scrollHeight,500)
+        
+    }
     return (
         <div className="relative w-full">
             <Card className={`w-full rounded-3xl shadow-2xl flex flex-col items-start group justify-center ${color}`}>
@@ -120,11 +136,11 @@ function CommonInput() {
                             <textarea
                                 ref={textareaRef}
                                 placeholder="Ask anything"
-                                className="w-full p-3 text-sm sm:text-base border-0 resize-none outline-none bg-transparent overflow-y-auto min-h-[40px] max-h-[200px]"
+                                className="w-full p-3 text-sm sm:text-base border-0 resize-none outline-none bg-transparent min-h-[40px] max-h-[200px]"
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
                                 onKeyDown={handleKeyPress}
-                                rows={1}
+                                rows={2}
                             />
                         </div>
                     </form>
